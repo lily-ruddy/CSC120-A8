@@ -16,7 +16,7 @@ _____ 10 pts: The class meaningfully implements each of the methods in described
       _____ `String drop(String item);`
       _____ `void examine(String item);`
       _____ `void use(String item);`
-      _____ `boolean walk(String direction);`
+      ___YES__ `boolean walk(String direction);`
       _____ `boolean fly(int x, int y);`
       ___YES__ `Number shrink();`
       ___YES__ `Number grow();`
