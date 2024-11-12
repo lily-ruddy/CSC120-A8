@@ -18,8 +18,8 @@ _____ 10 pts: The class meaningfully implements each of the methods in described
       _____ `void use(String item);`
       _____ `boolean walk(String direction);`
       _____ `boolean fly(int x, int y);`
-      _____ `Number shrink();`
-      _____ `Number grow();`
+      ___YES__ `Number shrink();`
+      ___YES__ `Number grow();`
       _____ `void rest();`
       _____ `void undo();`
 

@@ -1,3 +1,6 @@
+// Resources:
+// https://vertex-academy.com/tutorials/en/rounding-numbers-java/
+
 import java.util.Random;
 public class Duck {
 
@@ -5,7 +8,8 @@ public class Duck {
     Random rand = new Random();
     private String name; // name of the duck
     private String color; // color of the duck
-    private float size = Math.round(rand.nextFloat() * 10); // size of the duck
+    private double size = Math.ceil(rand.nextDouble() * 10); // random size of the duck; rounds up so zeros never happen
+    //private float size = 1;
 
     // Constructor:
     /**
@@ -39,7 +43,7 @@ public class Duck {
      * Getter for the size of the duck.
      * @return s; Size of the duck
      */
-    public float getSize(){
+    public double getSize(){
       return this.size;
     }
 
@@ -54,12 +58,47 @@ public class Duck {
         return this.name + " is a " + this.size + "-lbs " + this.color + " duck.";
     }
 
+    /**
+     * Shrinks the duck so they are 1 pound lighter. If they are already 1 pound they remain the same weight.
+     * @return size; weight of the duck in lbs
+     */
+    public Number shrink(){
+        /* If the duck is 1 lbs */
+        if(this.size == 1){
+            System.out.println("Sorry, " + this.name + " can't shrink any smaller.");
+            return this.size;
+
+        } else{
+            System.out.println(this.name + " shrunk to be " + (this.size -1) + " lbs.");
+            return this.size -= 1;
+        }
+    }
+
+    /**
+     * Grows the duck so they are 1 pound heavier. If they are already 10 pounds they remain the same weight.
+     * @return size; weight of the duck in lbs
+     */
+    public Number grow(){
+        /* If the duck is 10 lbs */
+        if(this.size == 10){
+            System.out.println("Sorry, " + this.name + " can't grow any bigger.");
+            return this.size;
+        } else{
+            System.out.println(this.name + " grew to be " + (this.size +1) + " lbs.");
+            return this.size += 1;
+        }
+    }
+
 
     public static void main(String[] args) {
         Duck ducky = new Duck("Ducky", "orange");
         System.out.println(ducky);
+        ducky.grow();
         Duck mrDuck = new Duck("Mr Duck", "yellow");
         System.out.println(mrDuck);
+        mrDuck.shrink();
+
+
         
     }
 }
