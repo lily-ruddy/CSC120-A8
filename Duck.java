@@ -9,10 +9,16 @@ public class Duck {
 
     // Attributes:
     Random rand = new Random();
+    /* Duck characteristics */
     private String name; // name of the duck
     private String color; // color of the duck
     private double size = Math.ceil(rand.nextDouble() * 10); // random size of the duck; rounds up so zeros never happen
     private int energy; // energy of the duck
+
+    /* Interactions */
+    private List<String> objects = Arrays.asList("bucket hat", "propeller hat", "mustache"); // list of all the available objects 
+    private String inventory; // when an object is in the duck's inventory it wears it
+    private String potentialObject; // when a duck encounters an object it'll be assigned to potentialObject, the duck can then grab it or leave it
     
    
     // Constructor:
@@ -72,6 +78,30 @@ public class Duck {
         return this.energy;
     } 
 
+    /**
+     * Getter for the available objects the duck can interact with
+     * @return objects; Objects of the duck
+     */
+    public List<String> getObjects(){
+        return this.objects;
+    }
+
+    /**
+     * Getter for the duck's inventory.
+     * @return inventory; Duck's inventory
+     */
+    public String getInventory(){
+        return this.inventory;
+    }
+
+    /**
+     * Getter for the duck's potential object
+     * @return object; Object that the duck can choose what to do with
+     */
+    public String getPotentialObject(){
+        return this.potentialObject;
+    }
+
     // Methods:
     /**
      * Nicely prints out a description of the duck.
@@ -118,15 +148,33 @@ public class Duck {
      * @return booleam; True = Duck is able to walk in the given direction, False = Duck either doesn't have enough energy or can't walk in the provided direction
      */
     public boolean walk(String direction){
-        List<String> DIRECTIONS = Arrays.asList("north", "south", "east" , "west"); // possible directions
+        /* Directions */
+        List<String> directionsList = Arrays.asList("north", "south", "east" , "west"); // possible directions
         direction = direction.toLowerCase(); // converts to all lowercase
 
+        /* Objects */
+        Random rand = new Random();  
+        int randEncounter = rand.nextInt(3); // 1/3 chance of encountering an object
+        int randObject = rand.nextInt(objects.size()); // randomly chooses the object the duck encounters
+
         /* Checking to see if direction is in DIRECTIONS */
-        if(DIRECTIONS.contains(direction)){
+        if(directionsList.contains(direction)){
             /* Checks to see if the duck has enough energy to walk */
             if(this.energy >= 1){
-                System.out.println(this.name + " is walking " + direction + ". *Quack*");
+                /* Walks */
+                System.out.println(this.name + " is walking " + direction + ". -1 energy point");
                 this.energy -= 1;
+
+                /* Object Encounter */
+                if(randEncounter == 0){
+                    System.out.println(this.name +" stumbled upon a " + objects.get(randObject) + "!");
+                    potentialObject = objects.get(randObject);
+
+                } else{
+                    System.out.println("*Quack* *Quack*");
+                }
+
+
                 return true;
 
             /* Not enough energy */
@@ -139,26 +187,36 @@ public class Duck {
             System.out.println("Please give a valid direction. The options include: \n * North\n * South\n * East \n * West");
             return false;
         }
-
     }
 
     /** 
      * Resest the duck's energy level to its original value.
      */
     public void rest(){
+        /* Small ducks have 3 energy */
         if(this.size < 4){
             this.energy = 3;
+            System.out.println("ZZZZZZZZ..."+this.name + " rested. They now have an energy level of " + this.energy +".");
 
         /* Medium ducks have 5 energy */    
         } else if(this.size < 7){
             this.energy = 5;
+            System.out.println("ZZZZZZZZ..."+this.name + " rested. They now have an energy level of " + this.energy +".");
 
         /* Large ducks have the most energy */
         } else{
             this.energy = 7;
+            System.out.println("ZZZZZZZZ..."+this.name + " rested. They now have an energy level of " + this.energy +".");
         }
     }
 
+    public void grab(String item){
+        if(potentialObject == null){
+            System.out.println("Sorry, " +this.name + " has nothing to grab.");
+        } else if(item.toLowerCase() != potentialObject){
+            System.out.println("Sorry, that wasn't the object " + this.name + " encountered. They found " + potentialObject + ".");
+        } 
+    }
 
     // accessories: bucket hat, spinner hat, mustache, 
     public static void main(String[] args) {
@@ -172,13 +230,12 @@ public class Duck {
         Duck mrDuck = new Duck("Mr Duck", "yellow");
         System.out.println(mrDuck);
         mrDuck.shrink();
-        System.out.println("1) Energy level: " +mrDuck.energy);
         mrDuck.walk("north");
-        System.out.println("2) Energy level: " +mrDuck.energy);
         mrDuck.walk("north");
-        System.out.println("3) Energy level: " +mrDuck.energy);
         mrDuck.rest();
-        System.out.println("4) Energy level: " +mrDuck.energy);
+
+
+        
 
 
         
