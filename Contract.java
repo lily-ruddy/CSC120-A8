@@ -8,7 +8,7 @@ public interface Contract {
     boolean fly(int x, int y);
     Number shrink(); // done
     Number grow(); // done
-    void rest();
+    void rest(); // done
     void undo();
 
 }

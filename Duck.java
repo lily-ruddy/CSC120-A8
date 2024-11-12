@@ -30,7 +30,7 @@ public class Duck {
             this.energy = 3;
 
         /* Medium ducks have 5 energy */    
-        } else if(4 <= this.size & this.size < 7){
+        } else if(this.size < 7){
             this.energy = 5;
 
         /* Large ducks have the most energy */
@@ -142,6 +142,23 @@ public class Duck {
 
     }
 
+    /** 
+     * Resest the duck's energy level to its original value.
+     */
+    public void rest(){
+        if(this.size < 4){
+            this.energy = 3;
+
+        /* Medium ducks have 5 energy */    
+        } else if(this.size < 7){
+            this.energy = 5;
+
+        /* Large ducks have the most energy */
+        } else{
+            this.energy = 7;
+        }
+    }
+
 
     // accessories: bucket hat, spinner hat, mustache, 
     public static void main(String[] args) {
@@ -155,9 +172,13 @@ public class Duck {
         Duck mrDuck = new Duck("Mr Duck", "yellow");
         System.out.println(mrDuck);
         mrDuck.shrink();
+        System.out.println("1) Energy level: " +mrDuck.energy);
         mrDuck.walk("north");
-
-        System.out.println("-----------------------------------------------");
+        System.out.println("2) Energy level: " +mrDuck.energy);
+        mrDuck.walk("north");
+        System.out.println("3) Energy level: " +mrDuck.energy);
+        mrDuck.rest();
+        System.out.println("4) Energy level: " +mrDuck.energy);
 
 
         

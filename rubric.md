@@ -20,7 +20,7 @@ _____ 10 pts: The class meaningfully implements each of the methods in described
       _____ `boolean fly(int x, int y);`
       ___YES__ `Number shrink();`
       ___YES__ `Number grow();`
-      _____ `void rest();`
+      ___YES__ `void rest();`
       _____ `void undo();`
 
 
