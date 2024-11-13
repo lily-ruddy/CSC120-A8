@@ -1,6 +1,7 @@
 // Resources:
 // https://vertex-academy.com/tutorials/en/rounding-numbers-java/
-// https://stackoverflow.com/questions/1128723/how-do-i-determine-whether-an-array-contains-a-particular-value-in-java
+// https://www.w3schools.com/java/ref_string_hashcode.asp
+
 
 import java.util.Random;
 import java.util.Arrays;
@@ -8,11 +9,9 @@ import java.util.List;
 public class Duck {
 
     // Attributes:
-    Random rand = new Random();
-    /* Duck characteristics */
     private String name; // name of the duck
     private String color; // color of the duck
-    private double size = Math.ceil(rand.nextDouble() * 10); // random size of the duck; rounds up so zeros never happen
+    private double size; // size of the duck
     private int energy; // energy of the duck
 
     /* Interactions */
@@ -30,6 +29,10 @@ public class Duck {
     public Duck(String name, String color){
         this.name = name; 
         this.color = color;
+
+        Random rand = new Random(); // randomly assigns 
+        rand.setSeed(this.name.hashCode()); // sets the seed so the weight of the duck is tied to its name
+        this.size = Math.ceil(rand.nextDouble() * 10); // random size of the duck; rounds up so zeros never happen
 
         /* Smaller ducks only have 3 energy to use */
         if(this.size < 4){
@@ -108,23 +111,31 @@ public class Duck {
      * @return description of duck
      */
     public String toString(){
-        return this.name + " is a " + this.size + "-lbs " + this.color + " duck.";
+        return this.name + " is a " + this.size + "-lbs " + this.color + " duck. "+ this.name + " has " + this.energy + " energy points to use.";
     }
 
     /**
-     * Shrinks the duck so they are 1 pound lighter. If they are already 1 pound they remain the same weight.
+     * Shrinks the duck so they are 1 pound lighter. If they are already 1 pound or not enough energy they remain the same weight.
      * @return size; weight of the duck in lbs
      */
     public Number shrink(){
-        /* If the duck is 1 lbs */
-        if(this.size == 1){
-            System.out.println("Sorry, " + this.name + " can't shrink any smaller.");
-            return this.size;
+        /* Check to see if there is enough energy */
+        if(this.energy >= 1){
+            /* If the duck is 1 lbs */
+            if(this.size == 1){
+                System.out.println("Sorry, " + this.name + " can't shrink any smaller.");
+                return this.size;
+
+            } else{
+                this.energy -= 1;
+                System.out.println(this.name + " shrunk to be " + (this.size -1) + " lbs. {Energy level: " + this.energy + "}");
+                return this.size -= 1;
+            }
 
         } else{
-            System.out.println(this.name + " shrunk to be " + (this.size -1) + " lbs.");
-            return this.size -= 1;
-        }
+            System.out.println("Sorry, " + this.name + " is too tired to shrink.");
+            return this.size;
+        }  
     }
 
     /**
@@ -132,13 +143,21 @@ public class Duck {
      * @return size; weight of the duck in lbs
      */
     public Number grow(){
-        /* If the duck is 10 lbs */
-        if(this.size == 10){
-            System.out.println("Sorry, " + this.name + " can't grow any bigger.");
+        /* Check to see if there is enough energy */
+        if(this.energy >= 1){
+            /* If the duck is 10 lbs */
+            if(this.size == 10){
+                System.out.println("Sorry, " + this.name + " can't grow any bigger.");
+                return this.size;
+            } else{
+                this.energy -= 1;
+                System.out.println(this.name + " grew to be " + (this.size +1) + " lbs. {Energy level: " + this.energy + "}");
+                return this.size += 1;
+            }
+
+        } else {
+            System.out.println("Sorry, " + this.name + " is too tired to grow.");
             return this.size;
-        } else{
-            System.out.println(this.name + " grew to be " + (this.size +1) + " lbs.");
-            return this.size += 1;
         }
     }
 
@@ -162,8 +181,8 @@ public class Duck {
             /* Checks to see if the duck has enough energy to walk */
             if(this.energy >= 1){
                 /* Walks */
-                System.out.println(this.name + " is walking " + direction + ". -1 energy point");
                 this.energy -= 1;
+                System.out.println(this.name + " is walking " + direction + ". {Energy level: " + this.energy + "}");
 
                 /* Object Encounter */
                 if(randEncounter == 0){
@@ -196,17 +215,17 @@ public class Duck {
         /* Small ducks have 3 energy */
         if(this.size < 4){
             this.energy = 3;
-            System.out.println("ZZZZZZZZ..."+this.name + " rested. They now have an energy level of " + this.energy +".");
+            System.out.println("ZZZZZZZZ... "+this.name + " rested. {Energy level: " + this.energy + "}");
 
         /* Medium ducks have 5 energy */    
         } else if(this.size < 7){
             this.energy = 5;
-            System.out.println("ZZZZZZZZ..."+this.name + " rested. They now have an energy level of " + this.energy +".");
+            System.out.println("ZZZZZZZZ... "+this.name + " rested. {Energy level: " + this.energy + "}");
 
         /* Large ducks have the most energy */
         } else{
             this.energy = 7;
-            System.out.println("ZZZZZZZZ..."+this.name + " rested. They now have an energy level of " + this.energy +".");
+            System.out.println("ZZZZZZZZ... "+this.name + " rested. {Energy level: " + this.energy + "}");
         }
     }
 
@@ -220,19 +239,23 @@ public class Duck {
 
     // accessories: bucket hat, spinner hat, mustache, 
     public static void main(String[] args) {
-        System.out.println("-----------------------------------------------");
+        System.out.println("------------------------------------------------------------------");
         Duck ducky = new Duck("Ducky", "orange");
         System.out.println(ducky);
-        ducky.grow();
+        ducky.shrink();
         ducky.walk("southeast");
+        ducky.walk("west");
+        ducky.walk("west");
+        ducky.shrink();
+        ducky.rest();
 
-        System.out.println("-----------------------------------------------");
+        System.out.println("------------------------------------------------------------------");
         Duck mrDuck = new Duck("Mr Duck", "yellow");
         System.out.println(mrDuck);
-        mrDuck.shrink();
+        mrDuck.grow();
         mrDuck.walk("north");
-        mrDuck.walk("north");
-        mrDuck.rest();
+    
+
 
 
         
