@@ -1,11 +1,13 @@
 // Resources:
 // https://vertex-academy.com/tutorials/en/rounding-numbers-java/
 // https://www.w3schools.com/java/ref_string_hashcode.asp
+// https://stackoverflow.com/questions/23047309/prompt-for-user-yes-or-no-input-in-java
 
 
 import java.util.Random;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 public class Duck {
 
     // Attributes:
@@ -13,13 +15,12 @@ public class Duck {
     private String color; // color of the duck
     private double size; // size of the duck
     private int energy; // energy of the duck
+    public static Scanner input = new Scanner(System.in); // scanner for user's input
 
     /* Interactions */
     private List<String> objects = Arrays.asList("bucket hat", "propeller hat", "mustache"); // list of all the available objects 
     private String inventory; // when an object is in the duck's inventory it wears it
-    private String potentialObject; // when a duck encounters an object it'll be assigned to potentialObject, the duck can then grab it or leave it
     
-   
     // Constructor:
     /**
      * Creates a Duck class. 
@@ -97,14 +98,6 @@ public class Duck {
         return this.inventory;
     }
 
-    /**
-     * Getter for the duck's potential object
-     * @return object; Object that the duck can choose what to do with
-     */
-    public String getPotentialObject(){
-        return this.potentialObject;
-    }
-
     // Methods:
     /**
      * Nicely prints out a description of the duck.
@@ -162,7 +155,7 @@ public class Duck {
     }
 
     /**
-     * Duck walks in the direction provided. Decrease 1 energy as a result. 
+     * Duck walks in the direction provided. Decrease 1 energy as a result. Also there is a chance that the duck can encounter an object to interact with.
      * @param direction; Direction the duck walks in
      * @return booleam; True = Duck is able to walk in the given direction, False = Duck either doesn't have enough energy or can't walk in the provided direction
      */
@@ -187,25 +180,44 @@ public class Duck {
                 /* Object Encounter */
                 if(randEncounter == 0){
                     System.out.println(this.name +" stumbled upon a " + objects.get(randObject) + "!");
-                    potentialObject = objects.get(randObject);
+                    
+                    /* Decision to pick up object */
+                    boolean yn = true; // answer to if the user wants to grab or not
+                    String decision; 
 
+                    /* While loop so that the user inputs correct format */
+                    while(yn){
+                        System.out.println("Do you want to pick up " + objects.get(randObject) + "? (yes or no)");
+                        decision = input.nextLine();
+
+                        /* User's response */
+                        switch(decision.toLowerCase()){
+                            case "yes": // yes, wants to pick up
+                                yn = false;
+                                this.grab(objects.get(randObject)); // goes directly to grabbing the object
+                                break;
+                            case "no": // no, don't want to pick up
+                                yn = false;
+                                break;
+                            default: // any other response will repeat the question until correct format
+                                yn = true;
+                        }
+                    }
                 } else{
                     System.out.println("*Quack* *Quack*");
                 }
-
-
-                return true;
+                return true; // Duck can walk in the direction, doesn't give information on whether the duck can interact with an object
 
             /* Not enough energy */
             } else{
                 System.out.println("Sorry, "+ this.name + " can't walk. Please rest to refill their energy.");
-                return false;
+                return false; // Duck doesn't have enough energy to walk 
             }
             
         } else{
             System.out.println("Please give a valid direction. The options include: \n * North\n * South\n * East \n * West");
             return false;
-        }
+        } 
     }
 
     /** 
@@ -229,14 +241,21 @@ public class Duck {
         }
     }
 
+    /**
+     * The duck can pick up/grab the object if they have 1 energy point. Adds the item to their inventory. 
+     * @param item; Item that the duck adds to their inventory
+     */
     public void grab(String item){
-        if(potentialObject == null){
-            System.out.println("Sorry, " +this.name + " has nothing to grab.");
-        } else if(item.toLowerCase() != potentialObject){
-            System.out.println("Sorry, that wasn't the object " + this.name + " encountered. They found " + potentialObject + ".");
-        } 
+        /* Check to see if the duck has enough energy to grab the item*/
+        if(this.energy >= 1){
+            this.energy -= 1; // subtracts 1 energy
+            this.inventory = item; // adds the item to inventory
+            System.out.println(this.name + " grabbed a " + item + ". {Energy level: " + this.energy + "}");
+        } else{
+            System.out.println("Sorry, "+ this.name + " is too tired to grab " + item +". Please rest to refill their energy.");
+        }
     }
-
+    
     // accessories: bucket hat, spinner hat, mustache, 
     public static void main(String[] args) {
         System.out.println("------------------------------------------------------------------");
@@ -254,13 +273,10 @@ public class Duck {
         System.out.println(mrDuck);
         mrDuck.grow();
         mrDuck.walk("north");
-    
 
-
-
-        
-
-
-        
+        System.out.println("------------------------------------------------------------------");
+        System.out.println(mrDuck.inventory);
+        System.out.println(ducky.inventory);
+       
     }
 }

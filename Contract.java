@@ -1,6 +1,6 @@
 public interface Contract {
 
-    void grab(String item);
+    void grab(String item); // done
     String drop(String item);
     void examine(String item);
     void use(String item);
