@@ -23,9 +23,11 @@ public class Duck {
     
     // Constructor:
     /**
-     * Creates a Duck class. 
-     * @param name; Name of the duck  
-     * @param color; Color of the duck
+     * Creates a randomly sized duck with your choice of name and color. The size of the duck corresponds to its energy amount that is used to perform various tasks. 
+     * For example, the duck has the ability to shrink and grow its size and interact with objects. 
+     * 
+     * @param name Name of the duck  
+     * @param color Color of the duck
      */
     public Duck(String name, String color){
         this.name = name; 
